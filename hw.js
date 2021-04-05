@@ -6,7 +6,6 @@ modalImgRef: document.querySelector('.lightbox__image'),
 modalRef: document.querySelector('.lightbox'),
 btnRef: document.querySelector('.lightbox__button')};
 
-
  const markup = gallery.map(
      ({ preview, original, description })=> 
          `
@@ -25,4 +24,20 @@ btnRef: document.querySelector('.lightbox__button')};
 </li>`)
 .join("");
 
-refs.galleryListRef.insertAdjacentHTML('beforeend', markup)
+refs.galleryListRef.insertAdjacentHTML('beforeend', markup);
+
+// Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
+
+refs.modalImgRef.addEventListener('click', onModalOpenClick);
+
+function onModalOpenClick (evt) {
+  
+  if (evt.target.nodeName !== 'IMG') {
+    return;
+  }
+  evt.preventDefault(); //прерывание перехода по ссылке!!!
+
+  refs.modalRef.classList.add('.is-open');
+  refs.modalImgRef.src=evt.target.dataset.source;
+  refs.modalImgRef.alt=evt.target.alt;
+}
