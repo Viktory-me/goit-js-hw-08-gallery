@@ -51,8 +51,17 @@ const onModalCloseClick = evt=> {
     refs.modal.classList.remove('is-open')}
 };
 
+refs.btnRef.addEventListener('click', onModalCloseClick);
 refs.galleryList.addEventListener('click', onModalOpenClick);
 window.addEventListener('click', onModalCloseClick);
+
+const onKeyClick= evt=>{
+  if (evt.key==="Escape") {
+    refs.modal.classList.remove('is-open')
+  }
+};
+
+window.addEventListener('keyup',onKeyClick);
 
 
 // function newSrc(index, step = 0) {
