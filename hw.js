@@ -51,7 +51,7 @@ const onModalCloseClick = evt=> {
     refs.modal.classList.remove('is-open')}
 };
 
-refs.modalImg.addEventListener('click', onModalOpenClick);
+refs.galleryList.addEventListener('click', onModalOpenClick);
 window.addEventListener('click', onModalCloseClick);
 
 
