@@ -1,13 +1,13 @@
 import gallery from './gallery-items.js';
 
 const refs={
-galleryListRef: document.querySelector('.js-gallery'),
-modalImgRef: document.querySelector('.lightbox__image'),
-modalRef: document.querySelector('.lightbox'),
+galleryList: document.querySelector('.js-gallery'),
+modalImg: document.querySelector('.lightbox__image'),
+modal: document.querySelector('.lightbox'),
 btnRef: document.querySelector('.lightbox__button')};
 
  const markup = gallery.map(
-     ({ preview, original, description })=> 
+     ({ preview, original, description },index)=> 
          `
     <li class="gallery__item">
   <a
@@ -19,25 +19,43 @@ btnRef: document.querySelector('.lightbox__button')};
       src="${preview}"
       data-source="${original}"
       alt="${description}"
+      data-index="${index}"
     />
   </a>
 </li>`)
 .join("");
 
-refs.galleryListRef.insertAdjacentHTML('beforeend', markup);
+refs.galleryList.insertAdjacentHTML('beforeend', markup);
 
 // Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
 
-refs.modalImgRef.addEventListener('click', onModalOpenClick);
+const onModalOpenClick= evt => {
+evt.preventDefault(); //прерывание перехода по ссылке!!!
 
-function onModalOpenClick (evt) {
+if (evt.target.localName === 'img'){
   
-  if (evt.target.nodeName !== 'IMG') {
-    return;
-  }
-  evt.preventDefault(); //прерывание перехода по ссылке!!!
 
-  refs.modalRef.classList.add('.is-open');
-  refs.modalImgRef.src=evt.target.dataset.source;
-  refs.modalImgRef.alt=evt.target.alt;
-}
+  refs.modalImg.src=evt.target.dataset.source;
+  refs.modalImg.alt=evt.target.alt;
+  refs.modalImg.dataset.index=evt.target.dataset.index;
+
+  refs.modal.classList.add('is-open')}
+};
+
+const onModalCloseClick = evt=> {
+  if (evt.target.localName !== 'img') {
+    
+    refs.modalImg.src='';
+    refs.modalImg.alt='';
+
+    refs.modal.classList.remove('is-open')}
+};
+
+refs.modalImg.addEventListener('click', onModalOpenClick);
+window.addEventListener('click', onModalCloseClick);
+
+
+// function newSrc(index, step = 0) {
+//   refs.modalImg.dataset.index = `${index + step}`;
+//   refs.modalImg.src = gallery[index + step].original;
+// };
